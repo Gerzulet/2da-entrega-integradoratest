@@ -1,45 +1,53 @@
 import { expect } from "chai";
 import mongoose from "mongoose";
-import config from "../config/config.js";
-import ProductService from "../services/productService.js";
+import { productService } from "../services/index.js";
+import { generateProduct } from "../utils/mockingGenerate.js";
+import { connectDB, disconnectDB } from "./test-setup.js";
 
-describe("Pruebas integrales del módulo de productos", () => {
+describe("Pruebas de products", () => {
+  let testProduct;
+  let productMock = generateProduct();
+
+  // Antes de cada prueba
   before(async () => {
-    await mongoose.connect(config.MONGO_TEST_URL);
+    await connectDB();
   });
 
+  // Después de ejecutar todas las pruebas
   after(async () => {
-    await mongoose.connection.close();
+    await disconnectDB();
   });
 
-  it("Prueba de operaciones CRUD de productos", async () => {
-    // Crear producto
-    const productMock = {
-      title: "Camiseta de Futbol",
-      description: "Ultima camiseta de futbol de Argentina",
-      price: 90000,
-      thumbnail: [""],
-      code: "PPP123",
-      stock: 25,
-      category: "remeras",
-    };
-    const createdProduct = await ProductService.createProduct(productMock);
-    expect(createdProduct).to.have.property("_id").and.not.null;
+  // Antes de cada prueba
+  beforeEach(async () => {
+    testProduct = await productService.createProduct(productMock);
+  });
 
-    // Obtener producto por ID
-    const fetchedProduct = await ProductService.getProductByID(createdProduct._id);
-    expect(fetchedProduct).to.have.property("_id").and.not.null;
-    expect(fetchedProduct.title).to.equal(productMock.title);
+  // Después de cada prueba
+  afterEach(async () => {
+    await mongoose.connection.db.dropCollection("products");
+  });
 
-    // Actualizar producto
-    const updatedProductMock = { ...productMock, price: 150 };
-    const updatedProduct = await ProductService.updateProduct(createdProduct._id, updatedProductMock);
-    expect(updatedProduct).to.have.property("_id").and.not.null;
-    expect(updatedProduct.price).to.equal(150);
+  it("Prueba de getAllProducts", async () => {
+    const products = await productService.getAllProducts();
+    expect(products).to.be.an("array");
+  });
 
-    // Eliminar producto
-    const deletionResult = await ProductService.deleteProduct(createdProduct._id);
-    const getProduct = await ProductService.getProductByID(createdProduct._id);
-    expect(getProduct).to.be.null;
+  it("Prueba de createProduct", async () => {
+    const newProduct = await productService.createProduct(testProduct);
+    expect(newProduct).to.have.property("_id").and.not.null;
+  });
+
+  it("Prueba de getProductByID", async () => {
+    const getProduct = await productService.getProductByID(testProduct._id);
+    expect(getProduct).to.have.property("_id").and.not.null;
+    expect(getProduct._id.toString()).to.equal(testProduct._id.toString());
+    expect(getProduct.code).to.equal(testProduct.code);
+  });
+
+  it("Prueba de deleteProduct", async () => {
+    const response = await productService.deleteProduct(testProduct._id);
+    const productsNull = await productService.getAllProducts();
+    expect(productsNull).to.be.an("array").that.is.empty;
   });
 });

@@ -1,12 +1,12 @@
 <div class="container mx-auto px-4">
   <div class="my-2 text-center border-2 text-uppercase">
-    <h2>Bienvenido</h2>
+    <h1>Bienvenido</h1>
   </div>
 
   <section class="hero">
     <div style="padding: 50px 0;">
-      <h2 class="text-center display-1 mobile">Descubre el estilo urbano que te define</h2>
-      <p class="text-center" style="margin: 0 0 4rem 0 !important;">Explora nuestra colección y encuentra elige lo que mas te guste.</p>
+      <h2 class="text-center display-1 d-none d-sm-block">Descubre el estilo urbano que te define</h2>
+      <p class="text-center" style="margin: 0 0 4rem 0 !important;">Explora nuestra colección y encuentra lo último en moda urbana.</p>
       <a href="/products" class="btn btn-effect btn-dark btn-jif bg-black zoomy">Ver colección</a>
     </div>
   </section>
@@ -14,7 +14,7 @@
   <section class="featured-products">
     <h2 class="text-center">Productos Destacados</h2>
     {{#if products}}
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="">
         {{#each products}}
           <div class="product">
             <img src="img/products/{{thumbnails}}" alt="Comprar {{title}}" />

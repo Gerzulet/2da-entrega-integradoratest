@@ -22,13 +22,13 @@ import { addLogger } from "./utils/logger.js";
 
 const app = express();
 const port = config.PORT;
-const uri = config.NODE_ENV === "test" ? config.MONGO_TEST_URL : config.MONGO_URL;
+const uri = config.NODE_ENV === "TEST" ? config.MONGO_TEST_URL : config.MONGO_URL;
 
 const swaggerOptions = {
   definition: {
     openapi: "3.0.1",
     info: {
-      title: "Documentacion Sport Plus Ecommerce",
+      title: "Documentacion JIF Style Ecommerce",
       description: "API pensada para aplicacion de un Marketplace",
     },
   },
@@ -41,7 +41,7 @@ app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/../../public`));
 
 initializePassport();
 app.use(passport.initialize());
@@ -65,7 +65,7 @@ app.set("views", __dirname + "/../views");
 
 // Mongoose
 mongoose
-  .connect(uri, { dbName: config.NODE_ENV === "test" ? "test" : "ecommerce" })
+  .connect(uri, { dbName: config.NODE_ENV === "TEST" ? "test" : "ecommerce" })
   .then(() => {
     console.log("Conexión exitosa a la base de datos");
     const server = app.listen(port, () => console.log(`Servidor corriendo en http://localhost:${port}`));
