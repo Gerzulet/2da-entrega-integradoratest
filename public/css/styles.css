@@ -361,7 +361,7 @@ table tr:nth-child(2n + 1) {
   font-weight: 600;
 }
 .hero {
-  background-image: url("https://juanfreille.github.io/javascriptPreEntrega/assets/img/locales.webp");
+  background-image: url("");
   background-size: cover;
   height: 300px;
   display: flex;
