@@ -1,6 +1,6 @@
 import { carts, products, users, tickets, resetPasswordCodes, messages } from "../dao/factory.js";
 
-import CartsRepository from "./CartService.js";
+import CartsRepository from "./cartService.js";
 import ProductsRepository from "./productService.js";
 import UsersRepository from "./userService.js";
 import TicketsRepository from "./ticketService.js";
