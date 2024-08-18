@@ -17,7 +17,7 @@ switch (config.PERSISTENCE) {
     const { default: CartsMongoDB } = await import("./MongoDB/CartManagerDB.js");
     const { default: ProductsMongoDB } = await import("./MongoDB/ProductManagerDB.js");
     const { default: UsersMongoDB } = await import("./MongoDB/UserManagerDB.js");
-    const { default: TicketsMongoDB } = await import("./MongoDB/TicketManagerDB.js");
+    const { default: TicketsMongoDB } = await import("./MongoDB/TickerManagerDB.js");
     const { default: MessagesMongoDB } = await import("./MongoDB/MessageManagerDB.js");
 
     carts = CartsMongoDB;
